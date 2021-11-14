@@ -12,7 +12,7 @@ export interface CustomConfigType {
   // 是否需要重新请求(请求失败时)
   isNeedReRequest?: boolean
   // 重新请求次数
-  connectContent?: number
+  connectCount?: number
   // 是否需要记录错误信息
   isNeedRecordErrorInfo?: boolean
   // 是否需要缓存

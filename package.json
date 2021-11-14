@@ -4,6 +4,8 @@
   "description": "基于 axios 二次封装的请求库。登录态、错误请求重新尝试发起、loading、错误处理、重复请求拦截、取消请求、多域名、断网情况、错误信息的埋点统计",
   "main": "index.js",
   "scripts": {
+    "dev": "rollup -w -c",
+    "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +19,9 @@
   },
   "homepage": "https://github.com/liuxinwu/quick-request#readme",
   "devDependencies": {
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
   }
 }

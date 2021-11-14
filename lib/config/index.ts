@@ -6,7 +6,7 @@ export const customConfigDefault: CustomConfigType = {
   isNeedLoading: false,
   isNeedError: true,
   isNeedReRequest: true,
-  connectContent: 3,
+  connectCount: 3,
   isNeedRecordErrorInfo: true,
   isNeedCache: false
 }
