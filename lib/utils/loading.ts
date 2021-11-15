@@ -1,9 +1,9 @@
 // 需要 loading 请求的数量与延时器 id
-let loadingMap = new Map<string, number>()
+let loadingMap = new Map<string, NodeJS.Timeout>()
 let isShowLoading = false
 
 export const handleLoading = (isStart: boolean, requestKey: string) => {
-  let timeId: number
+  let timeId: NodeJS.Timeout
 
   if (isStart) {
     timeId = setTimeout(() => {
