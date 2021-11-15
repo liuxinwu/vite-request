@@ -1,4 +1,4 @@
 import { AxiosError } from "axios";
-import QuickRequest from "..";
-export declare const collectError: (instance: QuickRequest, error: AxiosError) => void;
-export declare const getErrorInfo: (instance: QuickRequest) => AxiosError<any, any>[];
+import ViteRequest from "..";
+export declare const collectError: (instance: ViteRequest, error: AxiosError) => void;
+export declare const getErrorInfo: (instance: ViteRequest) => AxiosError<any, any>[];

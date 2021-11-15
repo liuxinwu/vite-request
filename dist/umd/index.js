@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('axios')) :
     typeof define === 'function' && define.amd ? define(['axios'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.QuickRequest = factory(global.axios));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ViteRequest = factory(global.axios));
 })(this, (function (axios) { 'use strict';
 
     function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -246,8 +246,8 @@
     };
 
     var IDENTIFIER = "/";
-    var QuickRequest = /** @class */ (function () {
-        function QuickRequest(config, customConfig) {
+    var ViteRequest = /** @class */ (function () {
+        function ViteRequest(config, customConfig) {
             if (config === void 0) { config = emptyObj(); }
             if (customConfig === void 0) { customConfig = emptyObj(); }
             this.customConfigDefault = customConfigDefault;
@@ -259,7 +259,7 @@
             // 合并自定义配置
             this.customConfigDefault = __assign(__assign({}, this.customConfigDefault), customConfig);
         }
-        QuickRequest.prototype.request = function (config, customConfig) {
+        ViteRequest.prototype.request = function (config, customConfig) {
             var _a;
             return __awaiter(this, void 0, void 0, function () {
                 var _customConfig, baseUrl, requestKey, res, error_1, status_1, connectResult, error_2;
@@ -327,7 +327,7 @@
                 });
             });
         };
-        QuickRequest.prototype.handleBeforeRequest = function (config, customConfig, requestKey) {
+        ViteRequest.prototype.handleBeforeRequest = function (config, customConfig, requestKey) {
             // 格式化 url
             config.url &&
                 (config.url = transfromPath(config.url, IDENTIFIER, startsWith));
@@ -337,20 +337,20 @@
             // 处理 Loading
             isNeedLoading && handleLoading(true, requestKey);
         };
-        QuickRequest.prototype.handleAfterRequest = function (customConfig, requestKey) {
+        ViteRequest.prototype.handleAfterRequest = function (customConfig, requestKey) {
             var _a = customConfig.isNeedLoading, isNeedLoading = _a === void 0 ? false : _a;
             // 处理重复请求
             handleRepeat(requestKey, false);
             // 处理 Loading
             isNeedLoading && handleLoading(false, requestKey);
         };
-        QuickRequest.prototype.handleError = function (customConfig, error) {
+        ViteRequest.prototype.handleError = function (customConfig, error) {
             var _a = customConfig.isNeedError, isNeedError = _a === void 0 ? false : _a;
             // 处理错误
             if (isNeedError)
                 handleError(error);
         };
-        QuickRequest.prototype.get = function (config, customConfig) {
+        ViteRequest.prototype.get = function (config, customConfig) {
             if (config === void 0) { config = emptyObj(); }
             if (customConfig === void 0) { customConfig = emptyObj(); }
             return __awaiter(this, void 0, void 0, function () {
@@ -359,7 +359,7 @@
                 });
             });
         };
-        QuickRequest.prototype.post = function (config, customConfig) {
+        ViteRequest.prototype.post = function (config, customConfig) {
             if (config === void 0) { config = emptyObj(); }
             if (customConfig === void 0) { customConfig = emptyObj(); }
             return __awaiter(this, void 0, void 0, function () {
@@ -368,7 +368,7 @@
                 });
             });
         };
-        QuickRequest.prototype["delete"] = function (config, customConfig) {
+        ViteRequest.prototype["delete"] = function (config, customConfig) {
             if (config === void 0) { config = emptyObj(); }
             if (customConfig === void 0) { customConfig = emptyObj(); }
             return __awaiter(this, void 0, void 0, function () {
@@ -377,7 +377,7 @@
                 });
             });
         };
-        QuickRequest.prototype.put = function (config, customConfig) {
+        ViteRequest.prototype.put = function (config, customConfig) {
             if (config === void 0) { config = emptyObj(); }
             if (customConfig === void 0) { customConfig = emptyObj(); }
             return __awaiter(this, void 0, void 0, function () {
@@ -386,12 +386,12 @@
                 });
             });
         };
-        QuickRequest.prototype.getAllErrorInfo = function () {
+        ViteRequest.prototype.getAllErrorInfo = function () {
             return getErrorInfo(this);
         };
-        return QuickRequest;
+        return ViteRequest;
     }());
 
-    return QuickRequest;
+    return ViteRequest;
 
 }));

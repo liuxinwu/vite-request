@@ -1,4 +1,4 @@
 import { AxiosRequestConfig } from "axios";
-import QuickRequest from "..";
+import ViteRequest from "..";
 import { CustomConfigType } from "../types/request";
-export declare const handleConnect: <T>(instance: QuickRequest, config: AxiosRequestConfig, _customConfig: CustomConfigType, requestKey: string) => Promise<import("axios").AxiosResponse<T, any>>;
+export declare const handleConnect: <T>(instance: ViteRequest, config: AxiosRequestConfig, _customConfig: CustomConfigType, requestKey: string) => Promise<import("axios").AxiosResponse<T, any>>;

@@ -12,11 +12,11 @@
   <script src="../dist/umd/index.js"></script>
 
   <script>
-    const quickRequest = new QuickRequest({
+    const viteRequest = new ViteRequest({
       baseURL: 'http://127.0.0.1:5000'
     })
-    quickRequest.customConfigDefault.refreshToken = async () => {
-      const res = await quickRequest.get({
+    viteRequest.customConfigDefault.refreshToken = async () => {
+      const res = await viteRequest.get({
         url: '/token'
       }, {
         isNeedLoading: true
@@ -26,38 +26,38 @@
       window.token = token
     }
     
-    // quickRequest.get({
+    // viteRequest.get({
     //   url: '/news-list'
     // }, {
     //   isNeedToken: true
     // }).then(res => console.log(res), error => console.log(error, 'error'))
 
-    // quickRequest.get({
+    // viteRequest.get({
     //   url: '/news-list'
     // }, {
     //   isNeedToken: true
     // }).then(res => console.log(res), error => console.log(error, 'error'))
 
-    // quickRequest.get({
+    // viteRequest.get({
     //   url: '/error'
     // }, {
     //   isNeedToken: true,
     // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
 
-    // quickRequest.get({
+    // viteRequest.get({
     //   url: '/error2'
     // }, {
     //   isNeedToken: true,
     // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
 
-    // quickRequest.get({
+    // viteRequest.get({
     //   url: '/time2'
     // }, {
     //   isNeedToken: true,
     //   isNeedLoading: true
     // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
 
-    // quickRequest.get({
+    // viteRequest.get({
     //   url: '/time1'
     // }, {
     //   isNeedToken: true,
@@ -65,7 +65,7 @@
     // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
     
     // 自动刷新 token
-    quickRequest.get({
+    viteRequest.get({
       url: '/token'
     }, {
       isNeedLoading: true
@@ -75,7 +75,7 @@
       window.token = token
       
       setTimeout(() => {
-        quickRequest.get({
+        viteRequest.get({
           url: '/expire'
         }, {
           isNeedToken: true,

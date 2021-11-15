@@ -7,12 +7,12 @@ export default {
     {
       file: './dist/umd/index.js',
       format: 'umd',
-      name: 'QuickRequest'
+      name: 'ViteRequest'
     },
     {
       file: './dist/es/index.js',
       format: 'es',
-      name: 'QuickRequest'
+      name: 'ViteRequest'
     }
   ],
   

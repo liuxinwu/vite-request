@@ -1,12 +1,12 @@
 import { AxiosRequestConfig } from "axios";
-import QuickRequest from "..";
+import ViteRequest from "..";
 import { CustomConfigType } from "../types/request";
 
 
 // 记录重连的次数
 const connectMap = new Map<string, number>();
 
-export const handleConnect = <T>(instance: QuickRequest, config: AxiosRequestConfig, _customConfig: CustomConfigType, requestKey: string) => {
+export const handleConnect = <T>(instance: ViteRequest, config: AxiosRequestConfig, _customConfig: CustomConfigType, requestKey: string) => {
   // 处理重连
   if (!connectMap.has(requestKey)) {
     connectMap.set(requestKey, 1);

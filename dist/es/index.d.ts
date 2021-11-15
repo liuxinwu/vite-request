@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { CustomConfigType } from "./types/request";
 import { InstanceType } from "./types/instance";
-export default class QuickRequest {
+export default class ViteRequest {
     instance: InstanceType;
     customConfigDefault: CustomConfigType;
     constructor(config?: AxiosRequestConfig, customConfig?: CustomConfigType);

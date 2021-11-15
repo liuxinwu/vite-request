@@ -19,7 +19,7 @@ import { collectError, getErrorInfo } from "./utils/collectError";
 
 const IDENTIFIER = "/";
 
-export default class QuickRequest {
+export default class ViteRequest {
   instance: InstanceType;
   customConfigDefault = customConfigDefault;
 
