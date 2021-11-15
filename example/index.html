@@ -9,50 +9,80 @@
 </head>
 <body>
   <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
-  <script src="../dist/index.js"></script>
+  <script src="../dist/umd/index.js"></script>
 
   <script>
     const quickRequest = new QuickRequest({
-      baseURL: 'http://127.0.0.1:3000'
+      baseURL: 'http://127.0.0.1:5000'
     })
+    quickRequest.customConfigDefault.refreshToken = async () => {
+      const res = await quickRequest.get({
+        url: '/token'
+      }, {
+        isNeedLoading: true
+      })
+      const { token } = res.data.data
+      console.log(token)
+      window.token = token
+    }
     
-    quickRequest.get({
-      url: '/news-list'
-    }, {
-      isNeedToken: true
-    }).then(res => console.log(res), error => console.log(error, 'error'))
+    // quickRequest.get({
+    //   url: '/news-list'
+    // }, {
+    //   isNeedToken: true
+    // }).then(res => console.log(res), error => console.log(error, 'error'))
 
-    quickRequest.get({
-      url: '/news-list'
-    }, {
-      isNeedToken: true
-    }).then(res => console.log(res), error => console.log(error, 'error'))
+    // quickRequest.get({
+    //   url: '/news-list'
+    // }, {
+    //   isNeedToken: true
+    // }).then(res => console.log(res), error => console.log(error, 'error'))
 
-    quickRequest.get({
-      url: '/error'
-    }, {
-      isNeedToken: true,
-    }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+    // quickRequest.get({
+    //   url: '/error'
+    // }, {
+    //   isNeedToken: true,
+    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
 
-    quickRequest.get({
-      url: '/error2'
-    }, {
-      isNeedToken: true,
-    }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+    // quickRequest.get({
+    //   url: '/error2'
+    // }, {
+    //   isNeedToken: true,
+    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
 
+    // quickRequest.get({
+    //   url: '/time2'
+    // }, {
+    //   isNeedToken: true,
+    //   isNeedLoading: true
+    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+
+    // quickRequest.get({
+    //   url: '/time1'
+    // }, {
+    //   isNeedToken: true,
+    //   isNeedLoading: true
+    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+    
+    // 自动刷新 token
     quickRequest.get({
-      url: '/time2'
+      url: '/token'
     }, {
-      isNeedToken: true,
       isNeedLoading: true
-    }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
-
-    quickRequest.get({
-      url: '/time1'
-    }, {
-      isNeedToken: true,
-      isNeedLoading: true
-    }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+    }).then(res => {
+      const { token } = res.data.data
+      console.log(token)
+      window.token = token
+      
+      setTimeout(() => {
+        quickRequest.get({
+          url: '/expire'
+        }, {
+          isNeedToken: true,
+          isNeedLoading: true
+        }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+      }, 5000)
+    }, error => console.log(error.toJSON(), 'error', error.response))
   </script>
 </body>
 </html>

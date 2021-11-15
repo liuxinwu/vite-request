@@ -3,6 +3,8 @@ import { AxiosRequestConfig } from "axios";
 export interface CustomConfigType {
   // 是否需要 token
   isNeedToken?: boolean
+  // 重新刷新 token 函数
+  refreshToken?: () => Promise<any>
   // token 处理函数
   handleToken?: (config: AxiosRequestConfig) => {},
   // 是否需要 loading

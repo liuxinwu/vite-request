@@ -18,7 +18,7 @@ http.createServer((req, res) => {
         data: {},
         msg: 'error 出错了'
       }))
-    }, parseInt(Math.random() * 3000 + 100))
+    }, parseInt(Math.random() * 5000 + 100))
     return
   }
 
@@ -43,15 +43,56 @@ http.createServer((req, res) => {
   if (url === '/time2') {
     setTimeout(() => {
       res.end('respose success' + parseInt(Math.random() * 100))
-    }, 3000)
+    }, 5000)
+    return
+  }
+
+  if (url === '/token') {
+    res.end(JSON.stringify({
+      data: {
+        token: Date.now()
+      },
+      msg: 'token success'
+    }))
+    return
+  }
+
+  if (url.startsWith('/expire')) {
+    const token = req.headers.auth
+    console.log(token, 'token')
+    const expireTime = 3 * 1000
+
+    if (Date.now() - token > expireTime) {
+      setTimeout(() => {
+        res.writeHead(401)
+        res.end(JSON.stringify({
+          data: {},
+          msg: '登录态实现，请重新验证'
+        }))
+      }, parseInt(Math.random() * 500 + 100))
+      return
+    }
+
+    setTimeout(() => {
+      res.end(JSON.stringify({
+        data: {
+        },
+        msg: 'expire success'
+      }))
+    }, parseInt(Math.random() * 500 + 100))
     return
   }
 
   setTimeout(() => {
-    res.end('respose success' + parseInt(Math.random() * 100))
+    res.end(JSON.stringify({
+      data: {
+        value: 'respose success' + parseInt(Math.random() * 100)
+      },
+      msg: 'expire success'
+    }))
   }, parseInt(Math.random() * 500 + 100))
-}).listen(3000, err => {
-  if (err) return console.log('listen port 3000 error', err)
+}).listen(5000, err => {
+  if (err) return console.log('listen port 5000 error', err)
 
-  console.log('listen port 3000 success')
+  console.log('listen port 5000 success')
 })

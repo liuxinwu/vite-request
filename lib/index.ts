@@ -13,10 +13,11 @@ import {
   handleRepeat,
   handleToken,
 } from "./utils/index";
+import { handleConnect } from "./utils/connect";
+import { createError } from "./utils/createError";
+import { collectError, getErrorInfo } from "./utils/collectError";
 
 const IDENTIFIER = "/";
-// 记录重连的次数
-const connectMap = new Map<string, number>();
 
 export default class QuickRequest {
   instance: InstanceType;
@@ -43,35 +44,59 @@ export default class QuickRequest {
       ...this.customConfigDefault,
       ...customConfig,
     };
-    const requestKey = `${window.location.href}_${config.url}_${config.method}`;
+    const baseUrl = this.instance.axiosInstance.defaults.baseURL ?? ''
+    const requestKey = `${window.location.href}_${ baseUrl + config.url}_${config.method}`;
+
+    // 网络检查
+    if (!window.navigator.onLine) {
+      return Promise.reject(createError("网络不可用", config));
+    }
 
     // 处理重复请求
-    if (handleRepeat(requestKey)) return Promise.reject({
-      message: "重复请求已被取消",
-      config
-    });
+    if (handleRepeat(requestKey))
+      return Promise.reject(createError("重复请求已被取消", config));
 
     try {
-      this.handleBeforeRequest(config, _customConfig, requestKey)
+      this.handleBeforeRequest(config, _customConfig, requestKey);
 
       const res = await this.instance.axiosInstance.request<T>(config);
       return res;
     } catch (error) {
+      const {
+        response: { status },
+      } = error;
       console.log("catch");
       // 处理重复请求 (这里调用的原因： 因为 catch 比 finally 调用快)
       handleRepeat(requestKey, false);
+      
+      // 收集错误信息
+      collectError(this, error)
 
-      // 处理重连
-      if (!connectMap.has(requestKey)) {
-        connectMap.set(requestKey, 1);
+      console.log(status, "status");
+      if (status !== 401) {
+        // 重连
+        const connectResult = handleConnect<T>(
+          this,
+          config,
+          _customConfig,
+          requestKey
+        );
+        if (connectResult) return connectResult;
+      } else {
+        // 重新刷新 token
+        console.log("重新刷新 token");
+        try {
+          if (_customConfig.refreshToken) {
+            await _customConfig.refreshToken();
+            return this.request(config, customConfig);
+          }
+        } catch (error) {
+          return Promise.reject(error);
+        }
       }
-      let connectCount = connectMap.get(requestKey) + 1;
-      if (connectCount < _customConfig.connectCount) {
-        connectMap.set(requestKey, connectCount);
-        return this.request(config, _customConfig);
-      }
+
+      // 处理错误
       this.handleError(_customConfig, error);
-      connectMap.delete(requestKey);
 
       // 抛出错误
       return Promise.reject(error);
@@ -93,7 +118,6 @@ export default class QuickRequest {
       isNeedToken = false,
       isNeedLoading = false,
       handleToken: _handleToken,
-      isNeedError = false,
     } = customConfig;
 
     // 处理 token
@@ -116,10 +140,7 @@ export default class QuickRequest {
   }
 
   private handleError(customConfig: CustomConfigType, error) {
-    const { isNeedError = false } = {
-      ...this.customConfigDefault,
-      ...customConfig,
-    };
+    const { isNeedError = false } = customConfig;
 
     // 处理错误
     if (isNeedError) handleError(error as AxiosError);
@@ -151,5 +172,9 @@ export default class QuickRequest {
     customConfig: CustomConfigType = emptyObj()
   ) {
     return this.request<T>({ ...config, method: "put" }, customConfig);
+  }
+
+  getAllErrorInfo() {
+    return getErrorInfo(this);
   }
 }

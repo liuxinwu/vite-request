@@ -2,7 +2,8 @@
   "name": "quick-request",
   "version": "1.0.0",
   "description": "基于 axios 二次封装的请求库。登录态、错误请求重新尝试发起、loading、错误处理、重复请求拦截、取消请求、多域名、断网情况、错误信息的埋点统计",
-  "main": "index.js",
+  "main": "dist/es/index.js",
+  "types": "dist/es/index.d.ts",
   "scripts": {
     "dev": "rollup -w -c",
     "build": "rollup -c",
