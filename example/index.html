@@ -1,88 +1,114 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
-  <script src="../dist/umd/index.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
+    <script src="../dist/umd/index.js"></script>
 
-  <script>
-    const viteRequest = new ViteRequest({
-      baseURL: 'http://127.0.0.1:5000'
-    })
-    viteRequest.customConfigDefault.refreshToken = async () => {
-      const res = await viteRequest.get({
-        url: '/token'
-      }, {
-        isNeedLoading: true
-      })
-      const { token } = res.data.data
-      console.log(token)
-      window.token = token
-    }
-    
-    // viteRequest.get({
-    //   url: '/news-list'
-    // }, {
-    //   isNeedToken: true
-    // }).then(res => console.log(res), error => console.log(error, 'error'))
+    <script>
+      const viteRequest = new ViteRequest(
+        {
+          baseURL: "http://127.0.0.1:5000",
+        },
+        {
+          isNeedLoading: true,
+          setToken(config) {
+            config.headers.token = "custom token";
+          },
+          showErrorFn(error) {
+            console.log(error, "自定义统一错误处理函数");
+          },
+          showLoadingFn(isShow) {
+            isShow ? console.log("start") : console.log("close");
+          },
+        }
+      );
+      viteRequest.customConfigDefault.refreshToken = async () => {
+        const res = await viteRequest.get(
+          {
+            url: "/token",
+          },
+          {
+            isNeedLoading: true,
+          }
+        );
+        const { token } = res.data.data;
+        console.log(token);
+        window.token = token;
+      };
 
-    // viteRequest.get({
-    //   url: '/news-list'
-    // }, {
-    //   isNeedToken: true
-    // }).then(res => console.log(res), error => console.log(error, 'error'))
+      // viteRequest.get({
+      //   url: '/news-list'
+      // }, {
+      //   isNeedToken: true
+      // }).then(res => console.log(res), error => console.log(error, 'error'))
 
-    // viteRequest.get({
-    //   url: '/error'
-    // }, {
-    //   isNeedToken: true,
-    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+      viteRequest
+        .get(
+          {
+            url: "/news-list",
+          },
+          {
+            isNeedToken: true,
+          }
+        )
+        .then(
+          (res) => console.log(res),
+          (error) => console.log(error, "error")
+        );
 
-    // viteRequest.get({
-    //   url: '/error2'
-    // }, {
-    //   isNeedToken: true,
-    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+      // viteRequest.get({
+      //   url: '/error'
+      // }, {
+      //   isNeedToken: true,
+      // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
 
-    // viteRequest.get({
-    //   url: '/time2'
-    // }, {
-    //   isNeedToken: true,
-    //   isNeedLoading: true
-    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+      // 无需走统一错误处理
+      // viteRequest.get({
+      //   url: '/error2'
+      // }, {
+      //   isNeedToken: true,
+      //   isNeedError: false
+      // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
 
-    // viteRequest.get({
-    //   url: '/time1'
-    // }, {
-    //   isNeedToken: true,
-    //   isNeedLoading: true
-    // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
-    
-    // 自动刷新 token
-    viteRequest.get({
-      url: '/token'
-    }, {
-      isNeedLoading: true
-    }).then(res => {
-      const { token } = res.data.data
-      console.log(token)
-      window.token = token
-      
-      setTimeout(() => {
-        viteRequest.get({
-          url: '/expire'
-        }, {
-          isNeedToken: true,
-          isNeedLoading: true
-        }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
-      }, 5000)
-    }, error => console.log(error.toJSON(), 'error', error.response))
-  </script>
-</body>
+      // viteRequest.get({
+      //   url: '/time2'
+      // }, {
+      //   isNeedToken: true,
+      //   isNeedLoading: true
+      // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+
+      // viteRequest.get({
+      //   url: '/time1'
+      // }, {
+      //   isNeedToken: true,
+      //   isNeedLoading: true
+      // }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+
+      // 自动刷新 token
+      // viteRequest.get({
+      //   url: '/token'
+      // }, {
+      //   isNeedLoading: true
+      // }).then(res => {
+      //   const { token } = res.data.data
+      //   console.log(token)
+      //   window.token = token
+
+      //   setTimeout(() => {
+      //     viteRequest.get({
+      //       url: '/expire'
+      //     }, {
+      //       isNeedToken: true,
+      //       isNeedLoading: true
+      //     }).then(res => console.log(res), error => console.log(error.toJSON(), 'error', error.response))
+      //   }, 5000)
+      // }, error => console.log(error.toJSON(), 'error', error.response))
+    </script>
+  </body>
 </html>

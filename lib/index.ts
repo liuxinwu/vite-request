@@ -44,8 +44,10 @@ export default class ViteRequest {
       ...this.customConfigDefault,
       ...customConfig,
     };
-    const baseUrl = this.instance.axiosInstance.defaults.baseURL ?? ''
-    const requestKey = `${window.location.href}_${ baseUrl + config.url}_${config.method}`;
+    const baseUrl = this.instance.axiosInstance.defaults.baseURL ?? "";
+    const requestKey = `${window.location.href}_${baseUrl + config.url}_${
+      config.method
+    }`;
 
     // 网络检查
     if (!window.navigator.onLine) {
@@ -68,12 +70,12 @@ export default class ViteRequest {
       console.log("catch");
       // 处理重复请求 (这里调用的原因： 因为 catch 比 finally 调用快)
       handleRepeat(requestKey, false);
-      
+
       // 收集错误信息
-      collectError(this, error)
+      collectError(this, error);
 
       console.log(status, "status");
-      if (status !== 401) {
+      if (status !== _customConfig.notPermissionCode) {
         // 重连
         const connectResult = handleConnect<T>(
           this,
@@ -117,33 +119,34 @@ export default class ViteRequest {
     const {
       isNeedToken = false,
       isNeedLoading = false,
-      handleToken: _handleToken,
+      setToken,
+      showLoadingFn,
     } = customConfig;
 
     // 处理 token
-    isNeedToken && handleToken(config, _handleToken);
+    isNeedToken && handleToken(config, setToken);
     // 处理 Loading
-    isNeedLoading && handleLoading(true, requestKey);
+    isNeedLoading && handleLoading(true, requestKey, showLoadingFn);
   }
 
   private handleAfterRequest(
     customConfig: CustomConfigType,
     requestKey: string
   ) {
-    const { isNeedLoading = false } = customConfig;
+    const { isNeedLoading = false, showLoadingFn } = customConfig;
 
     // 处理重复请求
     handleRepeat(requestKey, false);
 
     // 处理 Loading
-    isNeedLoading && handleLoading(false, requestKey);
+    isNeedLoading && handleLoading(false, requestKey, showLoadingFn);
   }
 
   private handleError(customConfig: CustomConfigType, error) {
-    const { isNeedError = false } = customConfig;
+    const { isNeedError = false, showErrorFn } = customConfig;
 
     // 处理错误
-    if (isNeedError) handleError(error as AxiosError);
+    if (isNeedError) handleError(error as AxiosError, showErrorFn);
   }
 
   async get<T>(

@@ -1,10 +1,11 @@
 import { AxiosRequestConfig } from "axios";
 
-export const handleToken = (config: AxiosRequestConfig, handleToken) => {
-  if (handleToken) return handleToken(config)
+export const handleToken = (
+  config: AxiosRequestConfig,
+  setToken: (config: AxiosRequestConfig) => void
+) => {
+  config.headers = { ...(config.headers || {}) };
+  if (handleToken) return setToken(config);
 
-  const token = (window as any).token
-  config.headers ? config.headers.auth = token : config.headers = {
-    auth: token
-  }
-}
+  config.headers.token = (window as any).token;
+};

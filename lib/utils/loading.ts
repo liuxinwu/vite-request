@@ -1,35 +1,41 @@
 // 需要 loading 请求的数量与延时器 id
-let loadingMap = new Map<string, NodeJS.Timeout>()
-let isShowLoading = false
+let loadingMap = new Map<string, NodeJS.Timeout>();
+let isShowLoading = false;
 
-export const handleLoading = (isStart: boolean, requestKey: string) => {
-  let timeId: NodeJS.Timeout
+export const handleLoading = (
+  isStart: boolean,
+  requestKey: string,
+  showLoadingFn?: (isShow: boolean) => void
+) => {
+  let timeId: NodeJS.Timeout;
 
   if (isStart) {
     timeId = setTimeout(() => {
       // 没有请求时显示 loading
       if (!isShowLoading) {
-        console.log('start loading')
-        isShowLoading = true
+        isShowLoading = true;
+        showLoadingFn
+          ? showLoadingFn(isShowLoading)
+          : console.log("start loading");
       }
-      clearTimeout(timeId)
-    }, 100)
+      clearTimeout(timeId);
+    }, 100);
 
     // 请求之前 添加请求记录与延时器 id
-    loadingMap.set(requestKey, timeId)
-    return
+    loadingMap.set(requestKey, timeId);
+    return;
   }
 
   // 请求回来之后 删除对应的请求记录
   if (loadingMap.has(requestKey)) {
-    const timeId = loadingMap.get(requestKey)
-    clearTimeout(timeId)
-    loadingMap.delete(requestKey)
+    const timeId = loadingMap.get(requestKey);
+    clearTimeout(timeId);
+    loadingMap.delete(requestKey);
 
     // 没有请求记录之后关闭 loading
     if (isShowLoading) {
-      console.log('end loading', loadingMap)
-      isShowLoading = false
+      isShowLoading = false;
+      showLoadingFn ? showLoadingFn(isShowLoading) : console.log("end loading");
     }
   }
-}
+};

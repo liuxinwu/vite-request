@@ -1,10 +1,13 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 export interface CustomConfigType {
     isNeedToken?: boolean;
+    setToken?: (config: AxiosRequestConfig) => void;
     refreshToken?: () => Promise<any>;
-    handleToken?: (config: AxiosRequestConfig) => {};
+    notPermissionCode: number;
     isNeedLoading?: boolean;
+    showLoadingFn?: (isShow: boolean) => void;
     isNeedError?: boolean;
+    showErrorFn?: (error: AxiosError) => void;
     isNeedReRequest?: boolean;
     connectCount?: number;
     isNeedRecordErrorInfo?: boolean;

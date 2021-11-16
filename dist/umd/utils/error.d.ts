@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-export declare const handleError: (error: AxiosError) => void;
+export declare const handleError: (error: AxiosError, showErrorFn?: (error: AxiosError) => void) => void;
 export declare enum statusCode {
     "权限不足，需要用户验证" = 401,
     "拒绝执行它" = 403,
