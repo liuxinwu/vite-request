@@ -1,7 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { CustomConfigType } from "./types/request";
+import { CustomConfigType } from "./types";
 import { Instance } from "./instance";
-import { InstanceType } from "./types/instance";
 import { customConfigDefault } from "./config";
 import {
   emptyObj,
@@ -20,7 +19,7 @@ import { collectError, getErrorInfo } from "./utils/collectError";
 const IDENTIFIER = "/";
 
 export default class ViteRequest {
-  instance: InstanceType;
+  instance: Instance;
   customConfigDefault = customConfigDefault;
 
   constructor(

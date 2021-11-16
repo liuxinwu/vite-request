@@ -1,4 +1,4 @@
-import { CustomConfigType } from "../types/request";
+import { CustomConfigType } from "../types";
 
 export const customConfigDefault: CustomConfigType = {
   isNeedToken: false,

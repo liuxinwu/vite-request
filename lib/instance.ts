@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { InstanceType } from './types/instance'
 
-export class Instance implements InstanceType {
+export class Instance {
   axiosInstance: AxiosInstance
 
   constructor(config?: AxiosRequestConfig) {

@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import ViteRequest from "..";
-import { CustomConfigType } from "../types/request";
+import { CustomConfigType } from "../types";
 
 
 // 记录重连的次数
