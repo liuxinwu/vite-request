@@ -58,10 +58,11 @@ http.createServer((req, res) => {
   }
 
   if (url.startsWith('/expire')) {
-    const token = req.headers.auth
+    const token = req.headers.token
     console.log(token, 'token')
     const expireTime = 3 * 1000
 
+    console.log(Date.now() - token > expireTime, 'Date.now() - token > expireTime')
     if (Date.now() - token > expireTime) {
       setTimeout(() => {
         res.writeHead(401)

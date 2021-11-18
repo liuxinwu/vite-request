@@ -5,7 +5,7 @@ export const handleToken = (
   setToken: (config: AxiosRequestConfig) => void
 ) => {
   config.headers = { ...(config.headers || {}) }
-  if (handleToken) return setToken(config)
+  if (setToken) return setToken(config)
 
   config.headers.token = (window as any).token
 }
