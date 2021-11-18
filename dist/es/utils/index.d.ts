@@ -4,3 +4,4 @@ export { handleLoading } from "./loading";
 export { handleRepeat } from "./repeat";
 export { handleToken } from "./token";
 export { emptyObj } from "./util";
+export { Cache } from './cache';

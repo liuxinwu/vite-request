@@ -5,6 +5,7 @@ export interface CustomConfigType {
     refreshToken?: () => Promise<any>;
     notPermissionCode: number;
     isNeedLoading?: boolean;
+    delayLoading: number;
     showLoadingFn?: (isShow: boolean) => void;
     isNeedError?: boolean;
     showErrorFn?: (error: AxiosError) => void;

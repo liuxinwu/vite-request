@@ -5,6 +5,7 @@ let isShowLoading = false;
 export const handleLoading = (
   isStart: boolean,
   requestKey: string,
+  delayLoading: number,
   showLoadingFn?: (isShow: boolean) => void
 ) => {
   let timeId: NodeJS.Timeout;
@@ -19,7 +20,7 @@ export const handleLoading = (
           : console.log("start loading");
       }
       clearTimeout(timeId);
-    }, 100);
+    }, delayLoading);
 
     // 请求之前 添加请求记录与延时器 id
     loadingMap.set(requestKey, timeId);

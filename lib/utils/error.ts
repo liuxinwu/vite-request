@@ -5,7 +5,7 @@ export const handleError = (
   showErrorFn?: (error: AxiosError) => void
 ) => {
   const {
-    response: { status, data },
+    response: { status = 0, data = {} } = {},
   } = error;
 
   data.msg = data.msg || statusCode[status];
@@ -15,6 +15,7 @@ export const handleError = (
 };
 
 export enum statusCode {
+  "请确认是否已经连上服务器" = 0,
   "权限不足，需要用户验证" = 401,
   "拒绝执行它" = 403,
   "服务器上未找到该资源" = 404,

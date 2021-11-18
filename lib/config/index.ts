@@ -5,6 +5,7 @@ export const customConfigDefault: CustomConfigType = {
   notPermissionCode: 401,
 
   isNeedLoading: false,
+  delayLoading: 300,
 
   isNeedError: true,
   isNeedReRequest: true,

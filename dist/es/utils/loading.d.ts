@@ -1,1 +1,1 @@
-export declare const handleLoading: (isStart: boolean, requestKey: string, showLoadingFn?: (isShow: boolean) => void) => void;
+export declare const handleLoading: (isStart: boolean, requestKey: string, delayLoading: number, showLoadingFn?: (isShow: boolean) => void) => void;

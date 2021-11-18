@@ -90,7 +90,7 @@ http.createServer((req, res) => {
       },
       msg: 'expire success'
     }))
-  }, parseInt(Math.random() * 500 + 100))
+  }, parseInt(Math.random() * 500 + 10))
 }).listen(5000, err => {
   if (err) return console.log('listen port 5000 error', err)
 

@@ -12,6 +12,8 @@ export interface CustomConfigType {
 
   // 是否需要 loading 默认值 false
   isNeedLoading?: boolean;
+  // loading 出现的延迟时间 默认值 300ms
+  delayLoading: number;
   // 自定义 loading
   showLoadingFn?: (isShow: boolean) => void;
 

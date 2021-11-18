@@ -11,12 +11,14 @@ import {
   handleLoading,
   handleRepeat,
   handleToken,
+  Cache
 } from "./utils/index";
 import { handleConnect } from "./utils/connect";
 import { createError } from "./utils/createError";
 import { collectError, getErrorInfo } from "./utils/collectError";
 
 const IDENTIFIER = "/";
+const cache = new Cache()
 
 export default class ViteRequest {
   instance: Instance;
@@ -56,54 +58,62 @@ export default class ViteRequest {
     // 处理重复请求
     if (handleRepeat(requestKey))
       return Promise.reject(createError("重复请求已被取消", config));
-
-    try {
-      this.handleBeforeRequest(config, _customConfig, requestKey);
-
-      const res = await this.instance.axiosInstance.request<T>(config);
-      return res;
-    } catch (error) {
-      const {
-        response: { status },
-      } = error;
-      console.log("catch");
-      // 处理重复请求 (这里调用的原因： 因为 catch 比 finally 调用快)
-      handleRepeat(requestKey, false);
-
-      // 收集错误信息
-      collectError(this, error);
-
-      console.log(status, "status");
-      if (status !== _customConfig.notPermissionCode) {
-        // 重连
-        const connectResult = handleConnect<T>(
-          this,
-          config,
-          _customConfig,
-          requestKey
-        );
-        if (connectResult) return connectResult;
-      } else {
-        // 重新刷新 token
-        console.log("重新刷新 token");
+    
+    if (_customConfig.isNeedCache) {
+      try {
+        const res = await cache.get<T>(requestKey)
+        return res
+      } catch (error) {
         try {
-          if (_customConfig.refreshToken) {
-            await _customConfig.refreshToken();
-            return this.request(config, customConfig);
+          this.handleBeforeRequest(config, _customConfig, requestKey);
+
+          const res = await this.instance.axiosInstance.request<T>(config);
+
+          // 设置缓存
+          if (_customConfig.isNeedCache) {
+            cache.set<T>(requestKey, res)
           }
+          return res;
         } catch (error) {
+          const {
+            response: { status = 0 } = {},
+          } = error;
+          // 处理重复请求 (这里调用的原因： 因为 catch 比 finally 调用快)
+          handleRepeat(requestKey, false);
+
+          // 收集错误信息
+          collectError(this, error);
+
+          if (status !== _customConfig.notPermissionCode) {
+            // 重连
+            const connectResult = handleConnect<T>(
+              this,
+              config,
+              _customConfig,
+              requestKey
+            );
+            if (connectResult) return connectResult;
+          } else {
+            // 重新刷新 token
+            try {
+              if (_customConfig.refreshToken) {
+                await _customConfig.refreshToken();
+                return this.request(config, customConfig);
+              }
+            } catch (error) {
+              return Promise.reject(error);
+            }
+          }
+
+          // 处理错误
+          this.handleError(_customConfig, error);
+
+          // 抛出错误
           return Promise.reject(error);
+        } finally {
+          this.handleAfterRequest(_customConfig, requestKey);
         }
       }
-
-      // 处理错误
-      this.handleError(_customConfig, error);
-
-      // 抛出错误
-      return Promise.reject(error);
-    } finally {
-      console.log("finally");
-      this.handleAfterRequest(_customConfig, requestKey);
     }
   }
 
@@ -118,6 +128,7 @@ export default class ViteRequest {
     const {
       isNeedToken = false,
       isNeedLoading = false,
+      delayLoading,
       setToken,
       showLoadingFn,
     } = customConfig;
@@ -125,20 +136,20 @@ export default class ViteRequest {
     // 处理 token
     isNeedToken && handleToken(config, setToken);
     // 处理 Loading
-    isNeedLoading && handleLoading(true, requestKey, showLoadingFn);
+    isNeedLoading && handleLoading(true, requestKey, delayLoading, showLoadingFn);
   }
 
   private handleAfterRequest(
     customConfig: CustomConfigType,
     requestKey: string
   ) {
-    const { isNeedLoading = false, showLoadingFn } = customConfig;
+    const { isNeedLoading = false, showLoadingFn, delayLoading } = customConfig;
 
     // 处理重复请求
     handleRepeat(requestKey, false);
 
     // 处理 Loading
-    isNeedLoading && handleLoading(false, requestKey, showLoadingFn);
+    isNeedLoading && handleLoading(false, requestKey, delayLoading, showLoadingFn);
   }
 
   private handleError(customConfig: CustomConfigType, error) {
