@@ -1,5 +1,5 @@
-import { AxiosError } from "axios"
-import ViteRequest from ".."
+import { AxiosError } from 'axios'
+import ViteRequest from '..'
 
 const errorMap = new WeakMap<ViteRequest, AxiosError[]>()
 

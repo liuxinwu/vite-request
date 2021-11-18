@@ -1,21 +1,25 @@
-import { AxiosRequestConfig } from "axios";
-import ViteRequest from "..";
-import { CustomConfigType } from "../types";
-
+import { AxiosRequestConfig } from 'axios'
+import ViteRequest from '..'
+import { CustomConfigType } from '../types'
 
 // 记录重连的次数
-const connectMap = new Map<string, number>();
+const connectMap = new Map<string, number>()
 
-export const handleConnect = <T>(instance: ViteRequest, config: AxiosRequestConfig, _customConfig: CustomConfigType, requestKey: string) => {
+export const handleConnect = <T>(
+  instance: ViteRequest,
+  config: AxiosRequestConfig,
+  _customConfig: CustomConfigType,
+  requestKey: string
+) => {
   // 处理重连
   if (!connectMap.has(requestKey)) {
-    connectMap.set(requestKey, 1);
+    connectMap.set(requestKey, 1)
   }
-  let connectCount = connectMap.get(requestKey) + 1;
+  let connectCount = connectMap.get(requestKey) + 1
   if (connectCount < _customConfig.connectCount) {
-    connectMap.set(requestKey, connectCount);
+    connectMap.set(requestKey, connectCount)
     // @ts-ignore
-    return instance.request<T>(config, _customConfig);
+    return instance.request<T>(config, _customConfig)
   }
-  connectMap.delete(requestKey);
+  connectMap.delete(requestKey)
 }

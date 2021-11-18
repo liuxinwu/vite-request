@@ -1,6 +1,9 @@
-import { AxiosRequestConfig, AxiosError } from "axios";
+import { AxiosRequestConfig, AxiosError } from 'axios'
 
-export const createError = (message: string, config: AxiosRequestConfig): AxiosError => {
+export const createError = (
+  message: string,
+  config: AxiosRequestConfig
+): AxiosError => {
   return {
     name: 'custom error',
     message,
@@ -9,6 +12,6 @@ export const createError = (message: string, config: AxiosRequestConfig): AxiosE
     toJSON: () => ({
       message,
       config,
-    })
+    }),
   }
 }

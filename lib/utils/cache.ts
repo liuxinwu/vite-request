@@ -1,5 +1,5 @@
-import { AxiosResponse } from "axios"
-import { createError } from "./createError"
+import { AxiosResponse } from 'axios'
+import { createError } from './createError'
 
 interface CacheType {
   [index: string]: AxiosResponse
@@ -51,7 +51,7 @@ export class Cache {
       try {
         resolve(cb.call(this))
       } catch (error) {
-        reject(createError("读取缓存数据出错了！", {}))
+        reject(createError('读取缓存数据出错了！', {}))
       }
     })
   }

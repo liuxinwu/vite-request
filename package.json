@@ -33,6 +33,7 @@
   "homepage": "https://github.com/liuxinwu/quick-request#readme",
   "devDependencies": {
     "axios": "^0.24.0",
+    "prettier": "2.4.1",
     "rollup-plugin-typescript2": "^0.30.0",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"

@@ -1,4 +1,4 @@
-import { CustomConfigType } from "../types";
+import { CustomConfigType } from '../types'
 
 export const customConfigDefault: CustomConfigType = {
   isNeedToken: false,
@@ -13,4 +13,4 @@ export const customConfigDefault: CustomConfigType = {
   isNeedRecordErrorInfo: true,
 
   isNeedCache: false,
-};
+}
