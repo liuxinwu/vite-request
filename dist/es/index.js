@@ -182,7 +182,7 @@ var handleLoading = function (isStart, requestKey, delayLoading, showLoadingFn) 
         clearTimeout(timeId_1);
         loadingMap["delete"](requestKey);
         // 没有请求记录之后关闭 loading
-        if (isShowLoading) {
+        if (isShowLoading && !loadingMap.size) {
             isShowLoading = false;
             showLoadingFn ? showLoadingFn(isShowLoading) : console.log('end loading');
         }

@@ -34,7 +34,7 @@ export const handleLoading = (
     loadingMap.delete(requestKey)
 
     // 没有请求记录之后关闭 loading
-    if (isShowLoading) {
+    if (isShowLoading && !loadingMap.size) {
       isShowLoading = false
       showLoadingFn ? showLoadingFn(isShowLoading) : console.log('end loading')
     }
