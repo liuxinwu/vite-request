@@ -1,6 +1,6 @@
-import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { CustomConfigType } from "./types";
-import { Instance } from "./instance";
+import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { CustomConfigType } from './types';
+import { Instance } from './instance';
 export default class ViteRequest {
     instance: Instance;
     customConfigDefault: CustomConfigType;

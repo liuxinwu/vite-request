@@ -1,2 +1,2 @@
-import { CustomConfigType } from "../types";
+import { CustomConfigType } from '../types';
 export declare const customConfigDefault: CustomConfigType;

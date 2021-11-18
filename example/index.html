@@ -13,34 +13,34 @@
     <script>
       const viteRequest = new ViteRequest(
         {
-          baseURL: "http://127.0.0.1:5000",
+          baseURL: 'http://127.0.0.1:5000',
         },
         {
           isNeedLoading: true,
           setToken(config) {
-            config.headers.token = "custom token";
+            config.headers.token = 'custom token'
           },
           showErrorFn(error) {
-            console.log(error, "自定义统一错误处理函数");
+            console.log(error, '自定义统一错误处理函数')
           },
           showLoadingFn(isShow) {
-            isShow ? console.log("start") : console.log("close");
+            isShow ? console.log('start') : console.log('close')
           },
         }
-      );
+      )
       viteRequest.customConfigDefault.refreshToken = async () => {
         const res = await viteRequest.get(
           {
-            url: "/token",
+            url: '/token',
           },
           {
             isNeedLoading: true,
           }
-        );
-        const { token } = res.data.data;
-        console.log(token);
-        window.token = token;
-      };
+        )
+        const { token } = res.data.data
+        console.log(token)
+        window.token = token
+      }
 
       // viteRequest.get({
       //   url: '/news-list'
@@ -51,7 +51,7 @@
       viteRequest
         .get(
           {
-            url: "/news-list",
+            url: '/news-list',
           },
           {
             isNeedToken: true,
@@ -60,12 +60,12 @@
         )
         .then(
           (res) => {
-            console.log(res);
+            console.log(res)
             setTimeout(() => {
               viteRequest
                 .get(
                   {
-                    url: "/news-list",
+                    url: '/news-list',
                   },
                   {
                     isNeedToken: true,
@@ -74,12 +74,12 @@
                 )
                 .then(
                   (res) => console.log(res),
-                  (error) => console.log(error, "error")
-                );
-            }, 1000);
+                  (error) => console.log(error, 'error')
+                )
+            }, 1000)
           },
-          (error) => console.log(error, "error")
-        );
+          (error) => console.log(error, 'error')
+        )
 
       // viteRequest.get({
       //   url: '/error'

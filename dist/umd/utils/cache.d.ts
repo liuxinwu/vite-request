@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import { AxiosResponse } from 'axios';
 interface CacheType {
     [index: string]: AxiosResponse;
 }

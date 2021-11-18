@@ -1,4 +1,4 @@
-import { AxiosError, AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from 'axios';
 export interface CustomConfigType {
     isNeedToken?: boolean;
     setToken?: (config: AxiosRequestConfig) => void;

@@ -57,7 +57,12 @@ export interface CustomConfigType {
 
 > 基于 rollupjs 打包
 
+- `npm run dev` 开发实时预览
+- `npm run build` 打包
+
 ## 使用实例
+
+> 具体见 [example](https://github.com/liuxinwu/vite-request/blob/feat/v1.0.0/example/index.html) 预览的同时需要启动 `node` 服务 `cd example & node serve.js`
 
 ### Install
 
