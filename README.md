@@ -79,7 +79,7 @@ import ViteRequest from 'vite-request'
 
 #### 初始化实例
 
-》不同的服务、可以通过多个实例化多个实例来实现
+> 不同的服务、可以通过多个实例化多个实例来实现
 
 - `constructor(config?: AxiosRequestConfig, customConfig?: CustomConfigType);`
 
