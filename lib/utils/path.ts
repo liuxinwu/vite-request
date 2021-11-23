@@ -15,7 +15,7 @@ export const startsWith = (str: string, identifier: string): string => {
  * @returns 处理后字符串
  */
 export const endsWith = (str: string, identifier: string): string => {
-  return str.endsWith(identifier) ? `${str}${identifier}` : str
+  return !str.endsWith(identifier) ? `${str}${identifier}` : str
 }
 
 export const transfromPath = (
