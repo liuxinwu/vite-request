@@ -47,6 +47,9 @@ export default class ViteRequest {
       ...customConfig,
     }
     const baseUrl = this.instance.axiosInstance.defaults.baseURL ?? ''
+    // 格式化 url
+    config.url &&
+      (config.url = transfromPath(config.url, IDENTIFIER, startsWith))
     const requestKey = `${window.location.href}_${baseUrl + config.url}_${
       config.method
     }`
@@ -56,20 +59,25 @@ export default class ViteRequest {
       return Promise.reject(createError('网络不可用', config))
     }
 
-    // 处理重复请求
+    // 处理重复请求并记录
     if (handleRepeat(requestKey))
       return Promise.reject(createError('重复请求已被取消', config))
 
     const request = async (): Promise<AxiosResponse<T>> => {
       try {
         this.handleBeforeRequest(config, _customConfig, requestKey)
-
+        
+        // 请求发起
         const res = await this.instance.axiosInstance.request<T>(config)
 
         // 设置缓存
         if (_customConfig.isNeedCache) {
           cache.set<T>(requestKey, res)
         }
+        
+        // 重置重连数
+        handleConnect<T>(this, config, _customConfig, requestKey, true)
+        
         return res
       } catch (error) {
         const { response: { status = 0 } = {} } = error
@@ -93,6 +101,7 @@ export default class ViteRequest {
           try {
             if (_customConfig.refreshToken) {
               await _customConfig.refreshToken()
+              // 重新发起之前 token 失效的请求
               return this.request(config, customConfig)
             }
           } catch (error) {
@@ -126,9 +135,6 @@ export default class ViteRequest {
     customConfig: CustomConfigType,
     requestKey: string
   ) {
-    // 格式化 url
-    config.url &&
-      (config.url = transfromPath(config.url, IDENTIFIER, startsWith))
     const {
       isNeedToken = false,
       isNeedLoading = false,
